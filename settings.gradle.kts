@@ -19,6 +19,6 @@ dependencyResolutionManagement {
 	}
 }
 
-rootProject.name = "MyTestAARApp"
+rootProject.name = "droid-peaches"
 include(":app")
-include(":myTestLibrary")
+include(":droid-peaches")
