@@ -24,7 +24,11 @@ class MainActivity : ComponentActivity() {
 
 		val scope = CoroutineScope(Dispatchers.IO)
 		scope.launch {
-			ServerCallExample().main()
+			ServerCallExample().main(onSuccess = {
+				println(it)
+			}, onFailure = {
+				println(it)
+			})
 		}
 
 		setContent {

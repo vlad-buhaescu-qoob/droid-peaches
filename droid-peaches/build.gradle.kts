@@ -1,8 +1,12 @@
+import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
 	alias(libs.plugins.android.library)
 	alias(libs.plugins.kotlin.android)
 	id("com.github.johnrengelman.shadow") version "8.1.1"
 	id("maven-publish")
+	id("com.vanniktech.maven.publish") version "0.30.0"
 }
 
 android {
@@ -14,11 +18,12 @@ android {
 
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		consumerProguardFiles("consumer-rules.pro")
+		consumerProguardFiles("proguard-rules.pro")
 	}
 
 	buildTypes {
 		release {
-			isMinifyEnabled = false
+			isMinifyEnabled = true
 			proguardFiles(
 				getDefaultProguardFile("proguard-android-optimize.txt"),
 				"proguard-rules.pro"
@@ -59,55 +64,42 @@ dependencies {
 	api(libs.okhttp)
 }
 
-publishing {
+mavenPublishing {
+	coordinates(
+		groupId = "io.github.vlad-buhaescu-qoob",
+		artifactId = "droid-peaches",
+		version = "1.0.7"
+	)
 
-	publications {
-		create<MavenPublication>("release") {
-			afterEvaluate {
-				from(components["release"])
-			}
-			groupId = "io.github.vlad-buhaescu-qoob"     // Customize as needed
-			artifactId = "droid-peaches"    // Name of your library
-			version = "1.0.1"           // Library version
+	pom {
+		name.set("Test maven deployment") // The name of the library
+		description.set("Tests all sorts of aspects regarding maven deployment")
+		inceptionYear.set("2025")
+		url.set("https://github.com/vlad-buhaescu-qoob/droid-peaches")
 
-			pom {
-				name.set("Test maven deployment") // The name of the library
-				description.set("Tests all sorts of aspects regarding maven deployment")
-				inceptionYear.set("2025")
-				url.set("https://github.com/vlad-buhaescu-qoob/droid-peaches")
-
-				licenses {
-					license {
-						name.set("Apache License 2.0")
-						url.set("http://www.apache.org/licenses/LICENSE-2.0")
-					}
-				}
-
-				developers {
-					developer {
-						id.set("vlad-buhaescu-qoob")
-						name.set("Vlad")
-						email.set("vlad.buhaescu@qoobiss.com") // Your email
-					}
-				}
-
-				scm {
-					connection.set("scm:git:https://github.com/vlad-buhaescu-qoob/droid-peaches.git")
-					developerConnection.set("scm:git:ssh://github.com/vlad-buhaescu-qoob/droid-peaches.git")
-					url.set("https://github.com/vlad-buhaescu-qoob/droid-peaches.git")
-				}
-			}
-
-		}
-	}
-	repositories {
-		maven {
-			url = uri("https://github.com/vlad-buhaescu-qoob/droid-peaches") // Replace with your Maven repo URL
-			credentials {
-				username = "vlad-buhaescu-qoob"
-				password =  project.findProperty("mySecretPassword") as String? ?: "defaultPassword"
+		licenses {
+			license {
+				name.set("MIT")
+				url.set("https://opensource.org/licenses/MIT")
 			}
 		}
+
+		developers {
+			developer {
+				id.set("vlad-buhaescu-qoob")
+				name.set("Vlad")
+				email.set("vlad.buhaescu@qoobiss.com") // Your email
+			}
+		}
+
+		scm {
+			url.set("https://github.com/vlad-buhaescu-qoob/droid-peaches")
+		}
 	}
+
+	publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+
+	// Enable GPG signing for all publications
+	signAllPublications()
 }
-
