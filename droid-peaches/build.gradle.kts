@@ -7,6 +7,7 @@ plugins {
 	id("com.github.johnrengelman.shadow") version "8.1.1"
 	id("maven-publish")
 	id("com.vanniktech.maven.publish") version "0.30.0"
+	alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -33,12 +34,14 @@ android {
 	compileOptions {
 		sourceCompatibility = JavaVersion.VERSION_11
 		targetCompatibility = JavaVersion.VERSION_11
+		isCoreLibraryDesugaringEnabled = true
 	}
 	kotlinOptions {
 		jvmTarget = "11"
 	}
 	buildFeatures {
 		prefab = true
+		compose = true
 	}
 
 	afterEvaluate {
@@ -57,18 +60,37 @@ dependencies {
 	implementation(libs.androidx.core.ktx)
 	implementation(libs.androidx.appcompat)
 	implementation(libs.material)
+//	implementation("com.android.tools:r8:8.0.25") // Latest R8
+
+	api(libs.okhttp)
+
+	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+
+	implementation(libs.androidx.lifecycle.runtime.ktx)
+	implementation(libs.androidx.activity.compose)
+	implementation(platform(libs.androidx.compose.bom))
+	implementation(libs.androidx.ui)
+	implementation(libs.androidx.ui.graphics)
+	implementation(libs.androidx.ui.tooling.preview)
+	implementation(libs.androidx.material3)
+//	implementation(project(":droid-peaches"))
 	testImplementation(libs.junit)
 	androidTestImplementation(libs.androidx.junit)
 	androidTestImplementation(libs.androidx.espresso.core)
+	androidTestImplementation(platform(libs.androidx.compose.bom))
+	androidTestImplementation(libs.androidx.ui.test.junit4)
+	debugImplementation(libs.androidx.ui.tooling)
+	debugImplementation(libs.androidx.ui.test.manifest)
+	implementation("androidx.navigation:navigation-compose:2.7.6")
 
-	api(libs.okhttp)
+
 }
 
 mavenPublishing {
 	coordinates(
 		groupId = "io.github.vlad-buhaescu-qoob",
 		artifactId = "droid-peaches",
-		version = "1.0.7"
+		version = "1.0.8"
 	)
 
 	pom {

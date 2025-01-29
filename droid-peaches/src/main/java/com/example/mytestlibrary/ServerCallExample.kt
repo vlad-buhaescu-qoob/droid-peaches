@@ -1,6 +1,5 @@
 
 import okhttp3.*
-import okio.IOException
 
 class ServerCallExample {
 
@@ -24,18 +23,20 @@ class ServerCallExample {
 			.build()
 
 		client.newCall(request).enqueue(object : Callback {
-			override fun onFailure(call: Call, e: IOException) {
-				onFailure(e.localizedMessage)
-				println("Request failed: $e")
+
+			override fun onFailure(call: Call, e: java.io.IOException) {
+								onFailure(e.localizedMessage)
+				println("Request failed: " + e)
+
 			}
 
 			override fun onResponse(call: Call, response: Response) {
 				if (response.isSuccessful) {
 					val responseBody = response.body?.string()
-					println("Response from server: $responseBody")
+					println("Response from server " + responseBody)
 					onSuccess(responseBody)
 				} else {
-					println("Unsuccessful response: ${response.code}")
+					println("Unsuccessful response: " + response.code)
 				}
 			}
 		})
