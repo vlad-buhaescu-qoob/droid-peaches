@@ -25,7 +25,7 @@ class ServerCallExample {
 		client.newCall(request).enqueue(object : Callback {
 
 			override fun onFailure(call: Call, e: java.io.IOException) {
-								onFailure(e.localizedMessage)
+				onFailure(e.localizedMessage)
 				println("Request failed: " + e)
 
 			}

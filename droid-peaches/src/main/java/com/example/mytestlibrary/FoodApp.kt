@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun FoodApp() {
+public fun FoodApp() {
 	val navController = rememberNavController()
 
 	NavHost(navController, startDestination = "foodList") {

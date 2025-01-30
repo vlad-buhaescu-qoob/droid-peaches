@@ -82,15 +82,13 @@ dependencies {
 	debugImplementation(libs.androidx.ui.tooling)
 	debugImplementation(libs.androidx.ui.test.manifest)
 	implementation("androidx.navigation:navigation-compose:2.7.6")
-
-
 }
 
 mavenPublishing {
 	coordinates(
 		groupId = "io.github.vlad-buhaescu-qoob",
 		artifactId = "droid-peaches",
-		version = "1.0.8"
+		version = "1.0.20"
 	)
 
 	pom {
